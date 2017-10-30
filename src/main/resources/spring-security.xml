@@ -1,0 +1,50 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+      http://www.springframework.org/schema/security
+      http://www.springframework.org/schema/security/spring-security-4.0.xsd ">
+
+    <http pattern="/login" security="none"/>  
+	<http auto-config="true">
+		<headers>
+			<frame-options policy="SAMEORIGIN" />
+		</headers>
+		<http-basic />
+		<csrf request-matcher-ref="csrfSecurityRequestMatcher" />
+	</http>
+
+	<beans:bean id="csrfSecurityRequestMatcher"
+		class="com.cmcc.ms.csrf.CsrfSecurityRequestMatcher">
+		<beans:property name="execludeUrls">
+			<beans:list>
+				<beans:value>/user/</beans:value>
+				<beans:value>/role/</beans:value>
+				<beans:value>/cdnManage/</beans:value>
+				<beans:value>/role/</beans:value>
+				<beans:value>/img/</beans:value>
+				<beans:value>/data/</beans:value>
+				<beans:value>/dataview/</beans:value>
+				<beans:value>/assets/</beans:value>
+				<beans:value>/news/</beans:value>
+				<beans:value>/uploadLogo/</beans:value>
+				<beans:value>/hatchedFileEdit/</beans:value>
+				<beans:value>/getpassword/</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	<authentication-manager>
+	</authentication-manager>
+
+	<beans:bean id="csrfFilter"
+		class="org.springframework.security.web.csrf.CsrfFilter">
+		<beans:constructor-arg>
+			<beans:bean
+				class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository" />
+		</beans:constructor-arg>
+	</beans:bean>
+	<beans:bean id="requestDataValueProcessor"
+		class="org.springframework.security.web.servlet.support.csrf.CsrfRequestDataValueProcessor" />
+</beans:beans> 
+
+

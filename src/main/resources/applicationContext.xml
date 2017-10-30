@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/tx     
+    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
+    default-lazy-init="false">
+    
+	<!-- enable autowire 向容器自动注册-->
+	<context:annotation-config/>
+	
+	<!-- 属性文件读入,使用rapid中的JdbcPlaceholderConfigurer则可以从数据库读取配置信息 -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:databaseconfig.properties</value>
+				<value>classpath:jta.properties</value>
+				<value>classpath:redis.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="b_dataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean">
+	    <property name="uniqueResourceName" value="db1" />
+        <property name="xaDataSourceClassName"
+            value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource" />
+        <property name="xaProperties">
+            <props>
+                <prop key="url"><![CDATA[${b.jdbc.url}]]></prop>
+                <prop key="user">${b.jdbc.username}</prop>
+                <prop key="password">${b.jdbc.password}</prop>
+            </props>
+        </property>
+        <property name="minPoolSize" value="10" />
+        <property name="maxPoolSize" value="50" />
+        <property name="borrowConnectionTimeout" value="5000" />
+        <property name="testQuery" value="select 1" />
+        <property name="maintenanceInterval" value="60" />
+    </bean>
+	
+	<bean id="a_dataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean">
+        <property name="uniqueResourceName" value="db2" />
+        <property name="xaDataSourceClassName"
+            value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource" />
+        <property name="xaProperties">
+            <props>
+                <prop key="url"><![CDATA[${a.jdbc.url}]]></prop>
+                <prop key="user">${a.jdbc.username}</prop>
+                <prop key="password">${a.jdbc.password}</prop>
+            </props>
+        </property>
+        <property name="minPoolSize" value="10" />
+        <property name="maxPoolSize" value="50" />
+        <property name="borrowConnectionTimeout" value="5000" />
+        <property name="testQuery" value="select 1" />
+        <property name="maintenanceInterval" value="60" />
+    </bean>
+    <bean id="sqlSessionCmcciwms" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
+        <constructor-arg index="0" ref="sqlSessionFactoryCmcciwms"/>
+    </bean>
+	<bean id="sqlSessionCmcciw" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
+        <constructor-arg index="0" ref="sqlSessionFactoryCmcciw"/>
+    </bean>
+    
+	
+	<!-- a SessionFactory -->
+	<bean id="sqlSessionFactoryCmcciwms" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="a_dataSource" />
+		<property name="typeAliasesPackage" value="com.cmcc.ms.entity" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath*:sqlmap/*.xml" />
+		<property name="typeHandlersPackage" value="com.cmcc.ms.entity.typehandler" />
+	</bean>
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryCmcciwms" />   
+		<property name="basePackage" value="com.cmcc.ms.mapper" />
+	</bean>
+	
+	<!-- b SessionFactory -->
+	<bean id="sqlSessionFactoryCmcciw" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="b_dataSource" />
+		<property name="typeAliasesPackage" value="com.cmcc.ms.entity" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath*:sqlmap/*.xml" />
+		<property name="typeHandlersPackage" value="com.cmcc.ms.entity.typehandler" />
+	</bean>
+		
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryCmcciw" />   
+		<property name="basePackage" value="com.cmcc.ms.mapper" />
+	</bean>
+	
+	<!-- 事务配置 -->
+    <bean id="userTransactionService" class="com.atomikos.icatch.config.UserTransactionServiceImp"
+        init-method="init" destroy-method="shutdownForce">
+        <constructor-arg>
+            <props>
+                <prop key="com.cmcc.ms.service.system">com.atomikos.icatch.standalone.UserTransactionServiceFactory</prop>
+            </props>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"
+        init-method="init" destroy-method="close" depends-on="userTransactionService">
+        <property name="forceShutdown" value="false" />
+    </bean>
+    
+    <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp"
+        depends-on="userTransactionService">
+        <property name="transactionTimeout" value="300" />
+    </bean>
+    
+    <bean id="springJTATransactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" depends-on="userTransactionService">
+        <property name="transactionManager" ref="atomikosTransactionManager" />
+        <property name="userTransaction" ref="atomikosUserTransaction" />
+    </bean>
+    
+    <import resource="spring-security.xml"/>  
+    <import resource="applicationContext-redis.xml"/>  
+</beans>

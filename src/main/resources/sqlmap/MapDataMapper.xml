@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmcc.ms.mapper.MapDataMapper" >
+  <resultMap id="BaseResultMap" type="com.cmcc.ms.entity.datashow.MapData" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="u_cdn" property="uCdn" jdbcType="DOUBLE" />
+    <result column="idc" property="idc" jdbcType="DOUBLE" />
+    <result column="u_cache" property="uCache" jdbcType="DOUBLE" />
+    <result column="p_cache" property="pCache" jdbcType="DOUBLE" />
+    <result column="p_ott" property="pOtt" jdbcType="DOUBLE" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="timestr" property="timestr" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, province, u_cdn, idc, u_cache, p_cache, p_ott, createtime, timestr
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cmcc.ms.entity.datashow.MapDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from map_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+    <select id="selectMaxCreatetime" resultType="java.util.Date">
+    SELECT MAX(createtime) FROM map_data;
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from map_data
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from map_data
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cmcc.ms.entity.datashow.MapDataExample" >
+    delete from map_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cmcc.ms.entity.datashow.MapData" >
+    insert into map_data (id, province, u_cdn, 
+      idc, u_cache, p_cache, p_ott, 
+      createtime, timestr)
+    values (#{id,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{uCdn,jdbcType=DOUBLE}, 
+      #{idc,jdbcType=DOUBLE}, #{uCache,jdbcType=DOUBLE}, #{pCache,jdbcType=DOUBLE}, #{pOtt,jdbcType=DOUBLE}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{timestr,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cmcc.ms.entity.datashow.MapData" >
+    insert into map_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="uCdn != null" >
+        u_cdn,
+      </if>
+      <if test="idc != null" >
+        idc,
+      </if>
+      <if test="uCache != null" >
+        u_cache,
+      </if>
+      <if test="pCache != null" >
+        p_cache,
+      </if>
+      <if test="pOtt != null" >
+        p_ott,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="timestr != null" >
+        timestr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="uCdn != null" >
+        #{uCdn,jdbcType=DOUBLE},
+      </if>
+      <if test="idc != null" >
+        #{idc,jdbcType=DOUBLE},
+      </if>
+      <if test="uCache != null" >
+        #{uCache,jdbcType=DOUBLE},
+      </if>
+      <if test="pCache != null" >
+        #{pCache,jdbcType=DOUBLE},
+      </if>
+      <if test="pOtt != null" >
+        #{pOtt,jdbcType=DOUBLE},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timestr != null" >
+        #{timestr,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cmcc.ms.entity.datashow.MapDataExample" resultType="java.lang.Integer" >
+    select count(*) from map_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update map_data
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uCdn != null" >
+        u_cdn = #{record.uCdn,jdbcType=DOUBLE},
+      </if>
+      <if test="record.idc != null" >
+        idc = #{record.idc,jdbcType=DOUBLE},
+      </if>
+      <if test="record.uCache != null" >
+        u_cache = #{record.uCache,jdbcType=DOUBLE},
+      </if>
+      <if test="record.pCache != null" >
+        p_cache = #{record.pCache,jdbcType=DOUBLE},
+      </if>
+      <if test="record.pOtt != null" >
+        p_ott = #{record.pOtt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.timestr != null" >
+        timestr = #{record.timestr,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update map_data
+    set id = #{record.id,jdbcType=INTEGER},
+      province = #{record.province,jdbcType=VARCHAR},
+      u_cdn = #{record.uCdn,jdbcType=DOUBLE},
+      idc = #{record.idc,jdbcType=DOUBLE},
+      u_cache = #{record.uCache,jdbcType=DOUBLE},
+      p_cache = #{record.pCache,jdbcType=DOUBLE},
+      p_ott = #{record.pOtt,jdbcType=DOUBLE},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      timestr = #{record.timestr,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cmcc.ms.entity.datashow.MapData" >
+    update map_data
+    <set >
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="uCdn != null" >
+        u_cdn = #{uCdn,jdbcType=DOUBLE},
+      </if>
+      <if test="idc != null" >
+        idc = #{idc,jdbcType=DOUBLE},
+      </if>
+      <if test="uCache != null" >
+        u_cache = #{uCache,jdbcType=DOUBLE},
+      </if>
+      <if test="pCache != null" >
+        p_cache = #{pCache,jdbcType=DOUBLE},
+      </if>
+      <if test="pOtt != null" >
+        p_ott = #{pOtt,jdbcType=DOUBLE},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timestr != null" >
+        timestr = #{timestr,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cmcc.ms.entity.datashow.MapData" >
+    update map_data
+    set province = #{province,jdbcType=VARCHAR},
+      u_cdn = #{uCdn,jdbcType=DOUBLE},
+      idc = #{idc,jdbcType=DOUBLE},
+      u_cache = #{uCache,jdbcType=DOUBLE},
+      p_cache = #{pCache,jdbcType=DOUBLE},
+      p_ott = #{pOtt,jdbcType=DOUBLE},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      timestr = #{timestr,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

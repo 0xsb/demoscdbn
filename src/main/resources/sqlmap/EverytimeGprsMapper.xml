@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmcc.ms.mapper.EverytimeGprsMapper" >
+  <resultMap id="BaseResultMap" type="com.cmcc.ms.entity.datashow.EverytimeGprs" >
+    <result column="time" property="time" jdbcType="VARCHAR" />
+    <result column="tengxun" property="tengxun" jdbcType="DOUBLE" />
+    <result column="aiqiy" property="aiqiy" jdbcType="DOUBLE" />
+    <result column="alibaba" property="alibaba" jdbcType="DOUBLE" />
+    <result column="youkutudou" property="youkutudou" jdbcType="DOUBLE" />
+    <result column="baidu" property="baidu" jdbcType="DOUBLE" />
+    <result column="leshi" property="leshi" jdbcType="DOUBLE" />
+    <result column="mangguo" property="mangguo" jdbcType="DOUBLE" />
+    <result column="souhu" property="souhu" jdbcType="DOUBLE" />
+    <result column="xinlang" property="xinlang" jdbcType="DOUBLE" />
+    <result column="jinshan" property="jinshan" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    time, tengxun, aiqiy, alibaba, youkutudou, baidu, leshi, mangguo, souhu, xinlang, 
+    jinshan
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cmcc.ms.entity.datashow.EverytimeGprsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from everytime_gprs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.cmcc.ms.entity.datashow.EverytimeGprsExample" >
+    delete from everytime_gprs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cmcc.ms.entity.datashow.EverytimeGprs" >
+    insert into everytime_gprs (time, tengxun, aiqiy, 
+      alibaba, youkutudou, baidu, 
+      leshi, mangguo, souhu, 
+      xinlang, jinshan)
+    values (#{time,jdbcType=VARCHAR}, #{tengxun,jdbcType=DOUBLE}, #{aiqiy,jdbcType=DOUBLE}, 
+      #{alibaba,jdbcType=DOUBLE}, #{youkutudou,jdbcType=DOUBLE}, #{baidu,jdbcType=DOUBLE}, 
+      #{leshi,jdbcType=DOUBLE}, #{mangguo,jdbcType=DOUBLE}, #{souhu,jdbcType=DOUBLE}, 
+      #{xinlang,jdbcType=DOUBLE}, #{jinshan,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cmcc.ms.entity.datashow.EverytimeGprs" >
+    insert into everytime_gprs
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="tengxun != null" >
+        tengxun,
+      </if>
+      <if test="aiqiy != null" >
+        aiqiy,
+      </if>
+      <if test="alibaba != null" >
+        alibaba,
+      </if>
+      <if test="youkutudou != null" >
+        youkutudou,
+      </if>
+      <if test="baidu != null" >
+        baidu,
+      </if>
+      <if test="leshi != null" >
+        leshi,
+      </if>
+      <if test="mangguo != null" >
+        mangguo,
+      </if>
+      <if test="souhu != null" >
+        souhu,
+      </if>
+      <if test="xinlang != null" >
+        xinlang,
+      </if>
+      <if test="jinshan != null" >
+        jinshan,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="time != null" >
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="tengxun != null" >
+        #{tengxun,jdbcType=DOUBLE},
+      </if>
+      <if test="aiqiy != null" >
+        #{aiqiy,jdbcType=DOUBLE},
+      </if>
+      <if test="alibaba != null" >
+        #{alibaba,jdbcType=DOUBLE},
+      </if>
+      <if test="youkutudou != null" >
+        #{youkutudou,jdbcType=DOUBLE},
+      </if>
+      <if test="baidu != null" >
+        #{baidu,jdbcType=DOUBLE},
+      </if>
+      <if test="leshi != null" >
+        #{leshi,jdbcType=DOUBLE},
+      </if>
+      <if test="mangguo != null" >
+        #{mangguo,jdbcType=DOUBLE},
+      </if>
+      <if test="souhu != null" >
+        #{souhu,jdbcType=DOUBLE},
+      </if>
+      <if test="xinlang != null" >
+        #{xinlang,jdbcType=DOUBLE},
+      </if>
+      <if test="jinshan != null" >
+        #{jinshan,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cmcc.ms.entity.datashow.EverytimeGprsExample" resultType="java.lang.Integer" >
+    select count(*) from everytime_gprs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update everytime_gprs
+    <set >
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tengxun != null" >
+        tengxun = #{record.tengxun,jdbcType=DOUBLE},
+      </if>
+      <if test="record.aiqiy != null" >
+        aiqiy = #{record.aiqiy,jdbcType=DOUBLE},
+      </if>
+      <if test="record.alibaba != null" >
+        alibaba = #{record.alibaba,jdbcType=DOUBLE},
+      </if>
+      <if test="record.youkutudou != null" >
+        youkutudou = #{record.youkutudou,jdbcType=DOUBLE},
+      </if>
+      <if test="record.baidu != null" >
+        baidu = #{record.baidu,jdbcType=DOUBLE},
+      </if>
+      <if test="record.leshi != null" >
+        leshi = #{record.leshi,jdbcType=DOUBLE},
+      </if>
+      <if test="record.mangguo != null" >
+        mangguo = #{record.mangguo,jdbcType=DOUBLE},
+      </if>
+      <if test="record.souhu != null" >
+        souhu = #{record.souhu,jdbcType=DOUBLE},
+      </if>
+      <if test="record.xinlang != null" >
+        xinlang = #{record.xinlang,jdbcType=DOUBLE},
+      </if>
+      <if test="record.jinshan != null" >
+        jinshan = #{record.jinshan,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update everytime_gprs
+    set time = #{record.time,jdbcType=VARCHAR},
+      tengxun = #{record.tengxun,jdbcType=DOUBLE},
+      aiqiy = #{record.aiqiy,jdbcType=DOUBLE},
+      alibaba = #{record.alibaba,jdbcType=DOUBLE},
+      youkutudou = #{record.youkutudou,jdbcType=DOUBLE},
+      baidu = #{record.baidu,jdbcType=DOUBLE},
+      leshi = #{record.leshi,jdbcType=DOUBLE},
+      mangguo = #{record.mangguo,jdbcType=DOUBLE},
+      souhu = #{record.souhu,jdbcType=DOUBLE},
+      xinlang = #{record.xinlang,jdbcType=DOUBLE},
+      jinshan = #{record.jinshan,jdbcType=DOUBLE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

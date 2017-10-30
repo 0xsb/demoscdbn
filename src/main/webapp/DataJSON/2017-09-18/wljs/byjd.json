@@ -1,0 +1,164 @@
+{
+    "byjd": [
+        {
+            "name": "安徽",
+            "geshu": 16,
+            "taishu": 3
+        },
+        {
+            "name": "北京",
+            "geshu": 2,
+            "taishu": 2
+        },
+        {
+            "name": "广西",
+            "geshu": 2,
+            "taishu": 1
+        },
+        {
+            "name": "贵州",
+            "geshu": 2,
+            "taishu": 2
+        },
+        {
+            "name": "海南",
+            "geshu": 2,
+            "taishu": 1
+        },
+        {
+            "name": "湖北",
+            "geshu": 1,
+            "taishu": 1
+        },
+        {
+            "name": "江苏",
+            "geshu": 2,
+            "taishu": 13
+        },
+        {
+            "name": "辽宁",
+            "geshu": 2,
+            "taishu": 2
+        },
+        {
+            "name": "内蒙古",
+            "geshu": 8,
+            "taishu": 1
+        },
+        {
+            "name": "宁夏",
+            "geshu": 3,
+            "taishu": 1
+        },
+        {
+            "name": "青海",
+            "geshu": 2,
+            "taishu": 1
+        },
+        {
+            "name": "陕西",
+            "geshu": 2,
+            "taishu": 1
+        },
+        {
+            "name": "上海",
+            "geshu": 4,
+            "taishu": 1
+        },
+        {
+            "name": "四川",
+            "geshu": 2,
+            "taishu": 1
+        },
+        {
+            "name": "天津",
+            "geshu": 1,
+            "taishu": 1
+        },
+        {
+            "name": "西藏",
+            "geshu": 2,
+            "taishu": 1
+        },
+        {
+            "name": "新疆",
+            "geshu": 2,
+            "taishu": 5
+        },
+        {
+            "name": "云南",
+            "geshu": 2,
+            "taishu": 1
+        },
+        {
+            "name": "福建",
+            "geshu": 2,
+            "taishu": 1
+        },
+        {
+            "name": "河北",
+            "geshu": 2,
+            "taishu": 2
+        },
+        {
+            "name": "黑龙江",
+            "geshu": 3,
+            "taishu": 8
+        },
+        {
+            "name": "重庆",
+            "geshu": 2,
+            "taishu": 1
+        },
+        {
+            "name": "山东",
+            "geshu": 5,
+            "taishu": 4
+        },
+        {
+            "name": "浙江",
+            "geshu": 1,
+            "taishu": 14
+        },
+        {
+            "name": "广东",
+            "geshu": 3,
+            "taishu": 13
+        },
+        {
+            "name": "吉林",
+            "geshu": 3,
+            "taishu": 5
+        },
+        {
+            "name": "河南",
+            "geshu": 2,
+            "taishu": 10
+        },
+        {
+            "name": "湖南",
+            "geshu": 12,
+            "taishu": 1
+        },
+        {
+            "name": "山西",
+            "geshu": 13,
+            "taishu": 11
+        },
+        {
+            "name": "江西",
+            "geshu": 2,
+            "taishu": 11
+        },
+        {
+            "name": "甘肃",
+            "geshu": 2,
+            "taishu": 5
+        },
+        {
+            "name": "全国",
+            "geshu": 109,
+            "taishu": 0
+        }
+    ]
+}

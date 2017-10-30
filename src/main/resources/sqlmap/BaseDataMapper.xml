@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmcc.ms.mapper.BaseDataMapper" >
+  <resultMap id="BaseResultMap" type="com.cmcc.ms.entity.datashow.BaseData" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="dev_name" property="devName" jdbcType="VARCHAR" />
+    <result column="dev_ip" property="devIp" jdbcType="VARCHAR" />
+    <result column="port_name" property="portName" jdbcType="VARCHAR" />
+    <result column="port_type" property="portType" jdbcType="VARCHAR" />
+    <result column="bus_big" property="busBig" jdbcType="VARCHAR" />
+    <result column="bus_small" property="busSmall" jdbcType="VARCHAR" />
+    <result column="peer_device" property="peerDevice" jdbcType="VARCHAR" />
+    <result column="trafficin" property="trafficin" jdbcType="DOUBLE" />
+    <result column="trafficout" property="trafficout" jdbcType="DOUBLE" />
+    <result column="bandwidth" property="bandwidth" jdbcType="DOUBLE" />
+  </resultMap>
+  <resultMap id="OverallAnalysisMap" type="com.cmcc.ms.entity.datashow.OverallAnalysis" >
+    <id column="bus_big" property="name" jdbcType="VARCHAR" />
+    <result column="ports" property="ports" jdbcType="INTEGER" />
+    <result column="trafficouts" property="trafficouts" jdbcType="DOUBLE" />
+    <result column="trafficins" property="trafficins" jdbcType="DOUBLE" />
+    <result column="bandwidth" property="bandwidth" jdbcType="DOUBLE" />
+  </resultMap>
+  <resultMap id="BusinessTrafficMap" type="com.cmcc.ms.entity.datashow.BusinessTraffic" >
+    <id column="bus_small" property="name" jdbcType="VARCHAR" />
+    <result column="t" property="trafficin" jdbcType="DOUBLE" />
+    <result column="bus_big" property="business" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, province, dev_name, dev_ip, port_name, port_type, bus_big, bus_small, peer_device, 
+    trafficin, trafficout, bandwidth
+  </sql>
+  
+  <select id="selectOverallAnalysisList" resultMap="OverallAnalysisMap">
+    SELECT bus_big,COUNT(*) ports,SUM(trafficout) trafficouts,SUM(trafficin) trafficins,SUM(bandwidth) bandwidth FROM basedata GROUP BY bus_big;
+  </select>
+  
+  <select id="selectBusinessTrafficList" resultMap="BusinessTrafficMap" parameterType="java.lang.String">
+	SELECT
+	bus_big,
+	bus_small,
+	SUM(trafficin) t
+	FROM
+	basedata
+	WHERE bus_big = #{busBig,jdbcType=VARCHAR}
+	GROUP BY bus_small
+	ORDER BY t DESC
+	LIMIT 0, 10
+  </select>
+  
+  <select id="selectSumTrafficin" resultType="java.lang.Double" parameterType="java.lang.String">
+    SELECT SUM(trafficin) t FROM basedata WHERE bus_big=#{busBig,jdbcType=VARCHAR};
+  </select>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cmcc.ms.entity.datashow.BaseDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from basedata
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from basedata
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from basedata
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cmcc.ms.entity.datashow.BaseDataExample" >
+    delete from basedata
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cmcc.ms.entity.datashow.BaseData" >
+    insert into basedata (id, province, dev_name, 
+      dev_ip, port_name, port_type, 
+      bus_big, bus_small, peer_device, 
+      trafficin, trafficout, bandwidth
+      )
+    values (#{id,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{devName,jdbcType=VARCHAR}, 
+      #{devIp,jdbcType=VARCHAR}, #{portName,jdbcType=VARCHAR}, #{portType,jdbcType=VARCHAR}, 
+      #{busBig,jdbcType=VARCHAR}, #{busSmall,jdbcType=VARCHAR}, #{peerDevice,jdbcType=VARCHAR}, 
+      #{trafficin,jdbcType=DOUBLE}, #{trafficout,jdbcType=DOUBLE}, #{bandwidth,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cmcc.ms.entity.datashow.BaseData" >
+    insert into basedata
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="devName != null" >
+        dev_name,
+      </if>
+      <if test="devIp != null" >
+        dev_ip,
+      </if>
+      <if test="portName != null" >
+        port_name,
+      </if>
+      <if test="portType != null" >
+        port_type,
+      </if>
+      <if test="busBig != null" >
+        bus_big,
+      </if>
+      <if test="busSmall != null" >
+        bus_small,
+      </if>
+      <if test="peerDevice != null" >
+        peer_device,
+      </if>
+      <if test="trafficin != null" >
+        trafficin,
+      </if>
+      <if test="trafficout != null" >
+        trafficout,
+      </if>
+      <if test="bandwidth != null" >
+        bandwidth,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="devName != null" >
+        #{devName,jdbcType=VARCHAR},
+      </if>
+      <if test="devIp != null" >
+        #{devIp,jdbcType=VARCHAR},
+      </if>
+      <if test="portName != null" >
+        #{portName,jdbcType=VARCHAR},
+      </if>
+      <if test="portType != null" >
+        #{portType,jdbcType=VARCHAR},
+      </if>
+      <if test="busBig != null" >
+        #{busBig,jdbcType=VARCHAR},
+      </if>
+      <if test="busSmall != null" >
+        #{busSmall,jdbcType=VARCHAR},
+      </if>
+      <if test="peerDevice != null" >
+        #{peerDevice,jdbcType=VARCHAR},
+      </if>
+      <if test="trafficin != null" >
+        #{trafficin,jdbcType=DOUBLE},
+      </if>
+      <if test="trafficout != null" >
+        #{trafficout,jdbcType=DOUBLE},
+      </if>
+      <if test="bandwidth != null" >
+        #{bandwidth,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cmcc.ms.entity.datashow.BaseDataExample" resultType="java.lang.Integer" >
+    select count(*) from basedata
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update basedata
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.devName != null" >
+        dev_name = #{record.devName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.devIp != null" >
+        dev_ip = #{record.devIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.portName != null" >
+        port_name = #{record.portName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.portType != null" >
+        port_type = #{record.portType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.busBig != null" >
+        bus_big = #{record.busBig,jdbcType=VARCHAR},
+      </if>
+      <if test="record.busSmall != null" >
+        bus_small = #{record.busSmall,jdbcType=VARCHAR},
+      </if>
+      <if test="record.peerDevice != null" >
+        peer_device = #{record.peerDevice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.trafficin != null" >
+        trafficin = #{record.trafficin,jdbcType=DOUBLE},
+      </if>
+      <if test="record.trafficout != null" >
+        trafficout = #{record.trafficout,jdbcType=DOUBLE},
+      </if>
+      <if test="record.bandwidth != null" >
+        bandwidth = #{record.bandwidth,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update basedata
+    set id = #{record.id,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=VARCHAR},
+      dev_name = #{record.devName,jdbcType=VARCHAR},
+      dev_ip = #{record.devIp,jdbcType=VARCHAR},
+      port_name = #{record.portName,jdbcType=VARCHAR},
+      port_type = #{record.portType,jdbcType=VARCHAR},
+      bus_big = #{record.busBig,jdbcType=VARCHAR},
+      bus_small = #{record.busSmall,jdbcType=VARCHAR},
+      peer_device = #{record.peerDevice,jdbcType=VARCHAR},
+      trafficin = #{record.trafficin,jdbcType=DOUBLE},
+      trafficout = #{record.trafficout,jdbcType=DOUBLE},
+      bandwidth = #{record.bandwidth,jdbcType=DOUBLE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cmcc.ms.entity.datashow.BaseData" >
+    update basedata
+    <set >
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="devName != null" >
+        dev_name = #{devName,jdbcType=VARCHAR},
+      </if>
+      <if test="devIp != null" >
+        dev_ip = #{devIp,jdbcType=VARCHAR},
+      </if>
+      <if test="portName != null" >
+        port_name = #{portName,jdbcType=VARCHAR},
+      </if>
+      <if test="portType != null" >
+        port_type = #{portType,jdbcType=VARCHAR},
+      </if>
+      <if test="busBig != null" >
+        bus_big = #{busBig,jdbcType=VARCHAR},
+      </if>
+      <if test="busSmall != null" >
+        bus_small = #{busSmall,jdbcType=VARCHAR},
+      </if>
+      <if test="peerDevice != null" >
+        peer_device = #{peerDevice,jdbcType=VARCHAR},
+      </if>
+      <if test="trafficin != null" >
+        trafficin = #{trafficin,jdbcType=DOUBLE},
+      </if>
+      <if test="trafficout != null" >
+        trafficout = #{trafficout,jdbcType=DOUBLE},
+      </if>
+      <if test="bandwidth != null" >
+        bandwidth = #{bandwidth,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cmcc.ms.entity.datashow.BaseData" >
+    update basedata
+    set province = #{province,jdbcType=VARCHAR},
+      dev_name = #{devName,jdbcType=VARCHAR},
+      dev_ip = #{devIp,jdbcType=VARCHAR},
+      port_name = #{portName,jdbcType=VARCHAR},
+      port_type = #{portType,jdbcType=VARCHAR},
+      bus_big = #{busBig,jdbcType=VARCHAR},
+      bus_small = #{busSmall,jdbcType=VARCHAR},
+      peer_device = #{peerDevice,jdbcType=VARCHAR},
+      trafficin = #{trafficin,jdbcType=DOUBLE},
+      trafficout = #{trafficout,jdbcType=DOUBLE},
+      bandwidth = #{bandwidth,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

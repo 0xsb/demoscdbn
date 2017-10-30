@@ -1,0 +1,152 @@
+#main{
+  position: relative;
+  top:67px;
+}
+.main{
+  padding: 50px 30px 100px 230px;
+}
+.module-header{
+  margin-bottom: 20px;
+  h4 {
+    border-bottom: 2px solid #eceff9;
+    font-size: 18px;
+    color: #666;
+    font-weight: normal;
+    .ivu-select-selection{
+      border:1px solid #ccc;
+      color: #333;
+    }
+    .info-question{
+      width: 18px;
+      height: 16px;
+      display: inline-block;
+      background: url(../imgs/icon-question.png) no-repeat
+    }
+    .role-text{
+      font-size: 14px;
+    }
+    .info-text{
+       color: #999;
+      font-size: 14px;
+    }
+  }
+}
+.dialog-body{
+  font-size: 14px;
+  color: #333;
+}
+.module-search{
+  width: 100%;
+  background: #f6f7fb;
+  padding: 15px 20px;
+  position: relative;
+  .item{
+    overflow: hidden;
+    min-height: 50px;
+    .datelabel{
+      font-size: 14px;
+      height: 30px;
+      line-height: 30px;
+      color: #666;
+      width: 90px;
+      float: left;
+    }
+    .search-item,.search-label,.line{
+      float: left;
+      font-size: 14px;
+    }
+    .line{
+      width: 20px;
+      height: 2px;
+      margin: 15px 10px 0 10px;
+      background: #ccc;
+    }
+    .search-label{
+      height: 30px;
+      line-height: 30px;
+      padding-right: 10px;
+    }
+  }
+  .search-ctrl{
+    position: absolute;
+    top:25px;
+    right:0px;
+    width: 140px;
+    height: 130px;
+    border-left:1px solid #ededed;
+  }
+}
+.search-result{
+  margin-top: 15px;
+  position: relative;
+  font-size: 14px;
+  color: #999;
+  line-height: 1.7;
+  .search-label{}
+  .search-content{
+    span{
+      color: #ff5021;
+      padding: 0 3px;
+    }
+  }
+  .search-download{
+    color:  @base-color-blue;
+    position: absolute;
+    right: 0;
+    bottom:0;
+  }
+}
+.table-set{
+  width: 100%;
+  min-height: 50px;
+  border:1px solid #e3e8ee;
+  background: #fbfdfe;
+  padding: 10px 25px;
+  .result-info{
+    font-size: 14px;
+    color: #999;
+  }
+  button{
+    height: 30px;
+    border-radius: 1px;
+    width: 78px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    padding: 0;
+  }
+}
+.module-query{
+  h4{
+    font-size:18px;
+    color: #666;
+    line-height: normal;
+    font-weight: normal;
+  }
+  .query-item{
+    margin-top: 20px;
+    label{
+      width: 80px;
+      font-size: 14px;
+      color: #666;
+      display: inline-block;
+      vertical-align: top;
+    }
+    ::-webkit-input-placeholder { /* WebKit browsers */
+      color: #999;
+      font-size: 14px;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+      color: #999;
+      font-size: 14px;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+      color: #999;
+      font-size: 14px;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+      color: #999;
+      font-size: 14px;
+    }
+  }
+}

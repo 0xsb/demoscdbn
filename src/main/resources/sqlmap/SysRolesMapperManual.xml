@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmcc.ms.mapper.SysRolesMapperManual" >
+  <resultMap id="BaseResultMap" type="com.cmcc.ms.entity.system.SysRolesManual" >
+    <id column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+    <result column="ROLE_DESC" property="roleDesc" jdbcType="VARCHAR" />
+    <result column="COMPANY" jdbcType="VARCHAR" property="company" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="LASTWROTIME" jdbcType="DATE" property="lastwrotime" />
+    <collection property="sysMenus" column="ROLE_ID" select="com.cmcc.ms.mapper.SysMenusMapperManual.getMenusByRoleId" fetchType="lazy"></collection>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ROLE_ID, ROLE_NAME, ROLE_DESC, COMPANY, CREATE_DATE, LASTWROTIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cmcc.ms.entity.system.SysRolesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_roles
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null and orderByClause != ''" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExampleForView" resultMap="BaseResultMap" parameterType="com.cmcc.ms.entity.system.SysRolesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_roles
+    where ROLE_NAME != '超级管理员'
+    <if test="orderByClause != null and orderByClause != ''" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" /> 
+    from sys_roles
+    where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </select>
+  <!-- 添加角色和权限中间表数据采用下面的方式插入数据效率比较高；-->
+  <insert id="addRoleMenu" parameterType="com.cmcc.ms.entity.system.SysRolesManual">
+	insert into role_menu_relation
+	(
+	select sr.role_id,sm.menu_id 
+	from 
+	sys_roles sr,sys_menus sm
+	where 
+	sr.role_id = #{roleId,jdbcType=INTEGER} 
+	and sm.menu_id IN 
+	<foreach collection="sysMenus" item="item"  open="(" separator="," close=")">
+		#{item.menuId,jdbcType=INTEGER}
+	</foreach>
+	)
+  </insert>
+  <delete id="deleteRelationByRoleId" parameterType="java.lang.Integer" >
+    delete from role_menu_relation 
+    where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </delete>
+   <select id="getRole" resultMap="BaseResultMap" parameterType="java.lang.Integer"> 
+    SELECT * 
+    FROM sys_roles  
+    WHERE role_id=#{roleId} 
+  </select>
+  <delete id="deleteByRoleIds" parameterType="java.lang.String" >
+    delete from sys_roles
+    where ROLE_ID IN 
+ 		<foreach item="roleIds" index="index" collection="array" open="(" separator="," close=")">
+			#{roleIds,jdbcType=INTEGER}
+		</foreach> 
+  </delete>
+</mapper>

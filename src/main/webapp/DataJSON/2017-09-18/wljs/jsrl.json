@@ -1,0 +1,132 @@
+{
+    "jsrl": [
+        {
+            "name": "全国",
+            "rongliang": 35.6
+        },
+        {
+            "name": "安徽",
+            "rongliang": 1.9
+        },
+        {
+            "name": "北京",
+            "rongliang": 0.4
+        },
+        {
+            "name": "福建",
+            "rongliang": 3.2
+        },
+        {
+            "name": "甘肃",
+            "rongliang": 0.9
+        },
+        {
+            "name": "广东",
+            "rongliang": 3.7
+        },
+        {
+            "name": "广西",
+            "rongliang": 1.6
+        },
+        {
+            "name": "贵州",
+            "rongliang": 0.7
+        },
+        {
+            "name": "海南",
+            "rongliang": 0.2
+        },
+        {
+            "name": "河北",
+            "rongliang": 1.5
+        },
+        {
+            "name": "河南",
+            "rongliang": 1.5
+        },
+        {
+            "name": "黑龙江",
+            "rongliang": 0.2
+        },
+        {
+            "name": "湖北",
+            "rongliang": 0.4
+        },
+        {
+            "name": "湖南",
+            "rongliang": 2.1
+        },
+        {
+            "name": "吉林",
+            "rongliang": 0.4
+        },
+        {
+            "name": "江苏",
+            "rongliang": 3.3
+        },
+        {
+            "name": "江西",
+            "rongliang": 2.5
+        },
+        {
+            "name": "辽宁",
+            "rongliang": 0.6
+        },
+        {
+            "name": "内蒙古",
+            "rongliang": 0.6
+        },
+        {
+            "name": "宁夏",
+            "rongliang": 0.3
+        },
+        {
+            "name": "青海",
+            "rongliang": 0.1
+        },
+        {
+            "name": "山东",
+            "rongliang": 2.1
+        },
+        {
+            "name": "山西",
+            "rongliang": 0.6
+        },
+        {
+            "name": "陕西",
+            "rongliang": 0.4
+        },
+        {
+            "name": "上海",
+            "rongliang": 0.4
+        },
+        {
+            "name": "四川",
+            "rongliang": 0.8
+        },
+        {
+            "name": "天津",
+            "rongliang": 0.1
+        },
+        {
+            "name": "西藏",
+            "rongliang": 0.2
+        },
+        {
+            "name": "新疆",
+            "rongliang": 0.4
+        },
+        {
+            "name": "云南",
+            "rongliang": 1.8
+        },
+        {
+            "name": "浙江",
+            "rongliang": 1.8
+        },
+        {
+            "name": "重庆",
+            "rongliang": 0.8
+        }
+    ]
+}

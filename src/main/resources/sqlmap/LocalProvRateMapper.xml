@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmcc.ms.mapper.LocalProvRateMapper" >
+  <resultMap id="BaseResultMap" type="com.cmcc.ms.entity.datamanager.LocalProvRate" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="local_prov_r" property="localProvR" jdbcType="REAL" />
+    <result column="city_user_in_day_avg" property="cityUserInDayAvg" jdbcType="INTEGER" />
+    <result column="prov_cache_day_avg" property="provCacheDayAvg" jdbcType="INTEGER" />
+    <result column="prov_cdn_day_avg" property="provCdnDayAvg" jdbcType="INTEGER" />
+    <result column="unity_cdn_day_avg" property="unityCdnDayAvg" jdbcType="INTEGER" />
+    <result column="idc_day_avg" property="idcDayAvg" jdbcType="INTEGER" />
+    <result column="data" property="data" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, province, local_prov_r, city_user_in_day_avg, prov_cache_day_avg, prov_cdn_day_avg, 
+    unity_cdn_day_avg, idc_day_avg, data
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cmcc.ms.entity.datamanager.LocalProvRateExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from local_prov_rate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from local_prov_rate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from local_prov_rate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cmcc.ms.entity.datamanager.LocalProvRateExample" >
+    delete from local_prov_rate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cmcc.ms.entity.datamanager.LocalProvRate" >
+    insert into local_prov_rate (id, province, local_prov_r, 
+      city_user_in_day_avg, prov_cache_day_avg, prov_cdn_day_avg, 
+      unity_cdn_day_avg, idc_day_avg, data
+      )
+    values (#{id,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{localProvR,jdbcType=REAL}, 
+      #{cityUserInDayAvg,jdbcType=INTEGER}, #{provCacheDayAvg,jdbcType=INTEGER}, #{provCdnDayAvg,jdbcType=INTEGER}, 
+      #{unityCdnDayAvg,jdbcType=INTEGER}, #{idcDayAvg,jdbcType=INTEGER}, #{data,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cmcc.ms.entity.datamanager.LocalProvRate" >
+    insert into local_prov_rate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="localProvR != null" >
+        local_prov_r,
+      </if>
+      <if test="cityUserInDayAvg != null" >
+        city_user_in_day_avg,
+      </if>
+      <if test="provCacheDayAvg != null" >
+        prov_cache_day_avg,
+      </if>
+      <if test="provCdnDayAvg != null" >
+        prov_cdn_day_avg,
+      </if>
+      <if test="unityCdnDayAvg != null" >
+        unity_cdn_day_avg,
+      </if>
+      <if test="idcDayAvg != null" >
+        idc_day_avg,
+      </if>
+      <if test="data != null" >
+        data,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="localProvR != null" >
+        #{localProvR,jdbcType=REAL},
+      </if>
+      <if test="cityUserInDayAvg != null" >
+        #{cityUserInDayAvg,jdbcType=INTEGER},
+      </if>
+      <if test="provCacheDayAvg != null" >
+        #{provCacheDayAvg,jdbcType=INTEGER},
+      </if>
+      <if test="provCdnDayAvg != null" >
+        #{provCdnDayAvg,jdbcType=INTEGER},
+      </if>
+      <if test="unityCdnDayAvg != null" >
+        #{unityCdnDayAvg,jdbcType=INTEGER},
+      </if>
+      <if test="idcDayAvg != null" >
+        #{idcDayAvg,jdbcType=INTEGER},
+      </if>
+      <if test="data != null" >
+        #{data,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cmcc.ms.entity.datamanager.LocalProvRateExample" resultType="java.lang.Integer" >
+    select count(*) from local_prov_rate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update local_prov_rate
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.localProvR != null" >
+        local_prov_r = #{record.localProvR,jdbcType=REAL},
+      </if>
+      <if test="record.cityUserInDayAvg != null" >
+        city_user_in_day_avg = #{record.cityUserInDayAvg,jdbcType=INTEGER},
+      </if>
+      <if test="record.provCacheDayAvg != null" >
+        prov_cache_day_avg = #{record.provCacheDayAvg,jdbcType=INTEGER},
+      </if>
+      <if test="record.provCdnDayAvg != null" >
+        prov_cdn_day_avg = #{record.provCdnDayAvg,jdbcType=INTEGER},
+      </if>
+      <if test="record.unityCdnDayAvg != null" >
+        unity_cdn_day_avg = #{record.unityCdnDayAvg,jdbcType=INTEGER},
+      </if>
+      <if test="record.idcDayAvg != null" >
+        idc_day_avg = #{record.idcDayAvg,jdbcType=INTEGER},
+      </if>
+      <if test="record.data != null" >
+        data = #{record.data,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update local_prov_rate
+    set id = #{record.id,jdbcType=INTEGER},
+      province = #{record.province,jdbcType=VARCHAR},
+      local_prov_r = #{record.localProvR,jdbcType=REAL},
+      city_user_in_day_avg = #{record.cityUserInDayAvg,jdbcType=INTEGER},
+      prov_cache_day_avg = #{record.provCacheDayAvg,jdbcType=INTEGER},
+      prov_cdn_day_avg = #{record.provCdnDayAvg,jdbcType=INTEGER},
+      unity_cdn_day_avg = #{record.unityCdnDayAvg,jdbcType=INTEGER},
+      idc_day_avg = #{record.idcDayAvg,jdbcType=INTEGER},
+      data = #{record.data,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cmcc.ms.entity.datamanager.LocalProvRate" >
+    update local_prov_rate
+    <set >
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="localProvR != null" >
+        local_prov_r = #{localProvR,jdbcType=REAL},
+      </if>
+      <if test="cityUserInDayAvg != null" >
+        city_user_in_day_avg = #{cityUserInDayAvg,jdbcType=INTEGER},
+      </if>
+      <if test="provCacheDayAvg != null" >
+        prov_cache_day_avg = #{provCacheDayAvg,jdbcType=INTEGER},
+      </if>
+      <if test="provCdnDayAvg != null" >
+        prov_cdn_day_avg = #{provCdnDayAvg,jdbcType=INTEGER},
+      </if>
+      <if test="unityCdnDayAvg != null" >
+        unity_cdn_day_avg = #{unityCdnDayAvg,jdbcType=INTEGER},
+      </if>
+      <if test="idcDayAvg != null" >
+        idc_day_avg = #{idcDayAvg,jdbcType=INTEGER},
+      </if>
+      <if test="data != null" >
+        data = #{data,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cmcc.ms.entity.datamanager.LocalProvRate" >
+    update local_prov_rate
+    set province = #{province,jdbcType=VARCHAR},
+      local_prov_r = #{localProvR,jdbcType=REAL},
+      city_user_in_day_avg = #{cityUserInDayAvg,jdbcType=INTEGER},
+      prov_cache_day_avg = #{provCacheDayAvg,jdbcType=INTEGER},
+      prov_cdn_day_avg = #{provCdnDayAvg,jdbcType=INTEGER},
+      unity_cdn_day_avg = #{unityCdnDayAvg,jdbcType=INTEGER},
+      idc_day_avg = #{idcDayAvg,jdbcType=INTEGER},
+      data = #{data,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

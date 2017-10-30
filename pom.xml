@@ -1,0 +1,868 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.cmcc.hy.opp</groupId>
+	<artifactId>demoms</artifactId>
+	<packaging>war</packaging>
+	<version>0.1-SNAPSHOT</version>
+	<name>demoms</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<spring.version>4.1.6.RELEASE</spring.version>
+		<slf4j.version>1.7.2</slf4j.version>
+		<jackson.version>2.1.0</jackson.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<profiles>
+		<!-- 开发环境 -->
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<!-- 数据库配置开始 -->
+				<jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+
+				<a.jdbc.url><![CDATA[jdbc:mysql://172.23.195.201:3306/cdnms?useUnicode=true&characterEncoding=utf-8&pinGlobalTxToPhysicalConnection=true]]></a.jdbc.url>
+				<a.jdbc.username>root</a.jdbc.username>
+				<a.jdbc.password>ms123+</a.jdbc.password>
+
+				<b.jdbc.url><![CDATA[jdbc:mysql://172.23.195.201:3306/cdnms?useUnicode=true&characterEncoding=utf-8&pinGlobalTxToPhysicalConnection=true]]></b.jdbc.url>
+				<b.jdbc.username>root</b.jdbc.username>
+				<b.jdbc.password>ms123+</b.jdbc.password>
+				<!-- 数据库配置结束 -->
+
+				<!-- redis配置开始 -->
+				<redis.pool.maxActive>200</redis.pool.maxActive>
+				<redis.pool.maxIdle>50</redis.pool.maxIdle>
+				<redis.pool.maxWait>1000</redis.pool.maxWait>
+				<redis.pool.testOnBorrow>true</redis.pool.testOnBorrow>
+				<redis.uri><![CDATA[redis://password:ldyldy@localhost:6379/0]]></redis.uri>
+				<redis.timeout>10000</redis.timeout>
+				<!-- redis配置结束 -->
+
+				<!-- 密码重置配置开始 resetPwdConfig.properties -->
+				<BOSSEMAIL>chinamobilecdn@163.com</BOSSEMAIL>
+				<BOSSEMAILPWD>chinacdn163</BOSSEMAILPWD>
+				<MAILSERVERHOST>smtp.163.com</MAILSERVERHOST>
+				<MAILSERVERPORT>25</MAILSERVERPORT>
+				<TOKENTIME>24</TOKENTIME>
+				<SERVERIP>localhost</SERVERIP>
+				<SERVERPOST>8081</SERVERPOST>
+				<MAILTITLE>\u5BC6\u7801\u627E\u56DE</MAILTITLE>
+				<MAILCONTENT><![CDATA[<strong>\u60A8\u597D\uFF0C\u60A8\u7533\u8BF7\u4E86\u5BC6\u7801\u627E\u56DE\uFF0C\u8BF7\u53CA\u65F6\u70B9\u51FB\u94FE\u63A5\u8FDB\u884C\u4FEE\u6539.<strong><br><p><strong>\u6E29\u99A8\u63D0\u793A\uFF1A\u8BE5\u94FE\u63A5\u5931\u6548\u65F6\u95F4\u4E3A<strong>]]></MAILCONTENT>
+				<BOSSMAILNAME>\u7CFB\u7EDF\u7BA1\u7406\u5458</BOSSMAILNAME>
+
+				<SERVERMENUID>-1</SERVERMENUID>
+				<COMPANYNUM>51</COMPANYNUM>
+				<SERVERMENUDATEID>69</SERVERMENUDATEID>
+				<PERIOD>2</PERIOD>
+				<VERCODE>0</VERCODE>
+				<ACCPTTYPE><![CDATA[application/json;charset=UTF-8]]></ACCPTTYPE>
+				<URL><![CDATA[http://localhost:8081/PythonToRest/rest/pyrest/]]></URL>
+				<COPDEV>\u7701\u7F51\u8BBE\u5907\u3001\u57CE\u57DF\u7F51\u8BBE\u5907\u3001IDC\u8BBE\u5907\u3001\u9AA8\u5E72\u7F51\u8BBE\u5907</COPDEV>
+				<ALLDEV>IP\u8BBE\u5907\u3001IDC\u8BBE\u5907\u3001CDN\u8BBE\u5907</ALLDEV>
+				<COPPORT>\u7701\u7F51\u4E0A\u8054\u3001\u7701\u9645\u76F4\u8FDE\u3001\u4E09\u65B9\u51FA\u53E3\u3001IDC\u3001ICP\u76F4\u8FDE\u3001\u7EDF\u5EFA\u5185\u5BB9\u7F51\u7EDC\u3001\u7701\u5EFACache\u3001\u7701\u5EFACDN\u3001\u7B2C\u4E09\u65B9CDN\u3001\u56FA\u7F51\u7528\u6237\u3001\u624B\u673A\u7528\u6237</COPPORT>
+				<ALLPORT>\u4ED8\u8D39\u7A7F\u900F\u3001\u4ED8\u8D39\u76F4\u8FDE\u3001\u6536\u8D39\u5BA2\u6237\u3001\u514D\u8D39\u76F4\u8FDE\u3001\u7701\u9645\u76F4\u8FDE\u3001\u7EDF\u5EFA\u5185\u5BB9\u7F51\u7EDC\u3001IDC</ALLPORT>
+				<SIZE>500</SIZE>
+				<PORT>/#</PORT>
+				<!-- 密码重置配置结束 -->
+
+				<!-- jta配置 开始 -->
+				<com.atomikos.icatch.service>com.atomikos.icatch.standalone.UserTransactionServiceFactory</com.atomikos.icatch.service>
+				<com.atomikos.icatch.console_file_name>tm.out</com.atomikos.icatch.console_file_name>
+				<com.atomikos.icatch.log_base_name>tmlog</com.atomikos.icatch.log_base_name>
+				<com.atomikos.icatch.tm_unique_name>com.tlw.bpm.engine.atomikos.spring.jdbc.tm</com.atomikos.icatch.tm_unique_name>
+				<com.atomikos.icatch.console_file_limit>10000</com.atomikos.icatch.console_file_limit>
+				<com.atomikos.icatch.console_file_count>10</com.atomikos.icatch.console_file_count>
+				<com.atomikos.icatch.max_timeout>600000</com.atomikos.icatch.max_timeout>
+				<com.atomikos.icatch.default_jta_timeout>120000</com.atomikos.icatch.default_jta_timeout>
+				<com.atomikos.icatch.console_log_level>info</com.atomikos.icatch.console_log_level>
+				<com.atomikos.icatch.enable_logging>false</com.atomikos.icatch.enable_logging>
+				<!-- jta配置 结束 -->
+
+				<!-- log4j配置开始 -->
+				<log4j.rootLogger>INFO,console</log4j.rootLogger>
+
+				<log4j.appender.console>org.apache.log4j.ConsoleAppender</log4j.appender.console>
+				<log4j.appender.console.Target>System.out</log4j.appender.console.Target>
+				<log4j.appender.console.layout>org.apache.log4j.PatternLayout</log4j.appender.console.layout>
+				<log4j.appender.console.layout.ConversionPattern>%d [%t] %-5p [%c] - %m%n</log4j.appender.console.layout.ConversionPattern>
+
+				<log4j.logger.org.apache>info</log4j.logger.org.apache>
+				<log4j.logger.org.mybatis>info</log4j.logger.org.mybatis>
+				<log4j.logger.org.springframework>info</log4j.logger.org.springframework>
+				<log4j.logger.com.atomikos>info</log4j.logger.com.atomikos>
+				<log4j.logger.com.cmcc.ms>info</log4j.logger.com.cmcc.ms>
+
+				<log4j.logger.com.cmcc.ms>info,quartz</log4j.logger.com.cmcc.ms>
+				<log4j.appender.quartz>org.apache.log4j.DailyRollingFileAppender</log4j.appender.quartz>
+				<log4j.appender.quartz.File>${catalina.home}/logs/AtomikosLog.log</log4j.appender.quartz.File>
+				<log4j.appender.quartz.MaxFileSize>10MB</log4j.appender.quartz.MaxFileSize>
+				<log4j.appender.quartz.MaxBackupIndex>10</log4j.appender.quartz.MaxBackupIndex>
+				<log4j.appender.quartz.layout>org.apache.log4j.PatternLayout</log4j.appender.quartz.layout>
+				<log4j.appender.quartz.layout.ConversionPattern>%d [%t] %-5p [%c] - %m%n</log4j.appender.quartz.layout.ConversionPattern>
+				
+				<log4j.logger.com.cmcc.ms.controller.ShowDataController>info,ShowData</log4j.logger.com.cmcc.ms.controller.ShowDataController>
+				<log4j.appender.ShowData>org.apache.log4j.DailyRollingFileAppender</log4j.appender.ShowData>
+				<log4j.appender.ShowData.File>${catalina.home}/logs/ShowData.log</log4j.appender.ShowData.File>
+				<log4j.appender.ShowData.MaxFileSize>10MB</log4j.appender.ShowData.MaxFileSize>
+				<log4j.appender.ShowData.MaxBackupIndex>10</log4j.appender.ShowData.MaxBackupIndex>
+				<log4j.appender.ShowData.layout>org.apache.log4j.PatternLayout</log4j.appender.ShowData.layout>
+				<log4j.appender.ShowData.layout.ConversionPattern>%d [%t] %-5p [%c] - %m%n</log4j.appender.ShowData.layout.ConversionPattern>
+				<!-- log4j配置结束 -->
+				
+				<!-- DataJson文件路径配置开始 -->
+				<dataJSON.url>/usr/DataJSON/</dataJSON.url>
+				<!-- DataJson文件路径配置结束 -->
+				
+			</properties>
+		</profile>
+
+		<!-- 测试环境 -->
+		<profile>
+			<id>test</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!-- 数据库配置开始 -->
+				<jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+
+				<a.jdbc.url><![CDATA[jdbc:mysql://172.23.195.201:3306/cdnms?useUnicode=true&characterEncoding=utf-8&pinGlobalTxToPhysicalConnection=true]]></a.jdbc.url>
+				<a.jdbc.username>root</a.jdbc.username>
+				<a.jdbc.password>ms123+</a.jdbc.password>
+
+				<b.jdbc.url><![CDATA[jdbc:mysql://172.23.195.201:3306/cdnms?useUnicode=true&characterEncoding=utf-8&pinGlobalTxToPhysicalConnection=true]]></b.jdbc.url>
+				<b.jdbc.username>root</b.jdbc.username>
+				<b.jdbc.password>ms123+</b.jdbc.password>
+				<!-- 数据库配置结束 -->
+
+				<!-- redis配置开始 -->
+				<redis.pool.maxActive>200</redis.pool.maxActive>
+				<redis.pool.maxIdle>50</redis.pool.maxIdle>
+				<redis.pool.maxWait>1000</redis.pool.maxWait>
+				<redis.pool.testOnBorrow>true</redis.pool.testOnBorrow>
+				<redis.uri><![CDATA[redis://password:123654@172.23.195.193:6379/0]]></redis.uri>
+				<redis.timeout>180</redis.timeout>
+				<!-- redis配置结束 -->
+
+				<!-- 密码重置配置开始 resetPwdConfig.properties -->
+				<BOSSEMAIL>chinamobilecdn@163.com</BOSSEMAIL>
+				<BOSSEMAILPWD>chinacdn163</BOSSEMAILPWD>
+				<MAILSERVERHOST>smtp.163.com</MAILSERVERHOST>
+				<MAILSERVERPORT>25</MAILSERVERPORT>
+				<TOKENTIME>24</TOKENTIME>
+				<SERVERIP>112.54.207.57</SERVERIP>
+				<SERVERPOST>10080</SERVERPOST>
+				<MAILTITLE>\u5BC6\u7801\u627E\u56DE</MAILTITLE>
+				<MAILCONTENT><![CDATA[<strong>\u60A8\u597D\uFF0C\u60A8\u7533\u8BF7\u4E86\u5BC6\u7801\u627E\u56DE\uFF0C\u8BF7\u53CA\u65F6\u70B9\u51FB\u94FE\u63A5\u8FDB\u884C\u4FEE\u6539.<strong><br><p><strong>\u6E29\u99A8\u63D0\u793A\uFF1A\u8BE5\u94FE\u63A5\u5931\u6548\u65F6\u95F4\u4E3A<strong>]]></MAILCONTENT>
+				<BOSSMAILNAME>\u7CFB\u7EDF\u7BA1\u7406\u5458</BOSSMAILNAME>
+
+				<SERVERMENUID>-1</SERVERMENUID>
+				<COMPANYNUM>51</COMPANYNUM>
+				<SERVERMENUDATEID>69</SERVERMENUDATEID>
+				<PERIOD>2</PERIOD>
+				<VERCODE>0</VERCODE>
+				<ACCPTTYPE><![CDATA[application/json;charset=UTF-8]]></ACCPTTYPE>
+				<URL><![CDATA[http://111.31.255.111:10080/PythonToRest/rest/pyrest/]]></URL>
+				<COPDEV>\u7701\u7F51\u8BBE\u5907\u3001\u57CE\u57DF\u7F51\u8BBE\u5907\u3001IDC\u8BBE\u5907\u3001\u9AA8\u5E72\u7F51\u8BBE\u5907</COPDEV>
+				<ALLDEV>IP\u8BBE\u5907\u3001IDC\u8BBE\u5907\u3001CDN\u8BBE\u5907</ALLDEV>
+				<COPPORT>\u7701\u7F51\u4E0A\u8054\u3001\u7701\u9645\u76F4\u8FDE\u3001\u4E09\u65B9\u51FA\u53E3\u3001IDC\u3001ICP\u76F4\u8FDE\u3001\u7EDF\u5EFA\u5185\u5BB9\u7F51\u7EDC\u3001\u7701\u5EFACache\u3001\u7701\u5EFACDN\u3001\u7B2C\u4E09\u65B9CDN\u3001\u56FA\u7F51\u7528\u6237\u3001\u624B\u673A\u7528\u6237</COPPORT>
+				<ALLPORT>\u4ED8\u8D39\u7A7F\u900F\u3001\u4ED8\u8D39\u76F4\u8FDE\u3001\u6536\u8D39\u5BA2\u6237\u3001\u514D\u8D39\u76F4\u8FDE\u3001\u7701\u9645\u76F4\u8FDE\u3001\u7EDF\u5EFA\u5185\u5BB9\u7F51\u7EDC\u3001IDC</ALLPORT>
+				<SIZE>500</SIZE>
+				<PORT>http://112.54.207.57:10080/#</PORT>
+				<!-- 密码重置配置结束 -->
+
+				<!-- jta配置 开始 -->
+				<com.atomikos.icatch.service>com.atomikos.icatch.standalone.UserTransactionServiceFactory</com.atomikos.icatch.service>
+				<com.atomikos.icatch.console_file_name>tm.out</com.atomikos.icatch.console_file_name>
+				<com.atomikos.icatch.log_base_name>tmlog</com.atomikos.icatch.log_base_name>
+				<com.atomikos.icatch.tm_unique_name>com.tlw.bpm.engine.atomikos.spring.jdbc.tm</com.atomikos.icatch.tm_unique_name>
+				<com.atomikos.icatch.console_file_limit>10000</com.atomikos.icatch.console_file_limit>
+				<com.atomikos.icatch.console_file_count>10</com.atomikos.icatch.console_file_count>
+				<com.atomikos.icatch.max_timeout>600000</com.atomikos.icatch.max_timeout>
+				<com.atomikos.icatch.default_jta_timeout>120000</com.atomikos.icatch.default_jta_timeout>
+				<com.atomikos.icatch.console_log_level>debug</com.atomikos.icatch.console_log_level>
+				<com.atomikos.icatch.enable_logging>false</com.atomikos.icatch.enable_logging>
+				<!-- jta配置 结束 -->
+
+				<!-- log4j配置开始 -->
+				<log4j.rootLogger>debug,console</log4j.rootLogger>
+
+				<log4j.appender.console>org.apache.log4j.ConsoleAppender</log4j.appender.console>
+				<log4j.appender.console.Target>System.out</log4j.appender.console.Target>
+				<log4j.appender.console.layout>org.apache.log4j.PatternLayout</log4j.appender.console.layout>
+				<log4j.appender.console.layout.ConversionPattern>%d [%t] %-5p [%c] - %m%n</log4j.appender.console.layout.ConversionPattern>
+
+				<log4j.logger.org.apache>debug</log4j.logger.org.apache>
+				<log4j.logger.org.mybatis>debug</log4j.logger.org.mybatis>
+				<log4j.logger.org.springframework>debug</log4j.logger.org.springframework>
+				<log4j.logger.com.atomikos>debug</log4j.logger.com.atomikos>
+				<log4j.logger.com.cmcc.ms>debug</log4j.logger.com.cmcc.ms>
+
+				<log4j.logger.com.cmcc.ms>info,quartz</log4j.logger.com.cmcc.ms>
+				<log4j.appender.quartz>org.apache.log4j.DailyRollingFileAppender</log4j.appender.quartz>
+				<log4j.appender.quartz.File>${catalina.home}/logs/AtomikosLog.log</log4j.appender.quartz.File>
+				<log4j.appender.quartz.MaxFileSize>10MB</log4j.appender.quartz.MaxFileSize>
+				<log4j.appender.quartz.MaxBackupIndex>10</log4j.appender.quartz.MaxBackupIndex>
+				<log4j.appender.quartz.layout>org.apache.log4j.PatternLayout</log4j.appender.quartz.layout>
+				<log4j.appender.quartz.layout.ConversionPattern>%d [%t] %-5p [%c] - %m%n</log4j.appender.quartz.layout.ConversionPattern>
+				
+				<log4j.logger.com.cmcc.ms.controller.ShowDataController>info,ShowData</log4j.logger.com.cmcc.ms.controller.ShowDataController>
+				<log4j.appender.ShowData>org.apache.log4j.DailyRollingFileAppender</log4j.appender.ShowData>
+				<log4j.appender.ShowData.File>${catalina.home}/logs/ShowData.log</log4j.appender.ShowData.File>
+				<log4j.appender.ShowData.MaxFileSize>10MB</log4j.appender.ShowData.MaxFileSize>
+				<log4j.appender.ShowData.MaxBackupIndex>10</log4j.appender.ShowData.MaxBackupIndex>
+				<log4j.appender.ShowData.layout>org.apache.log4j.PatternLayout</log4j.appender.ShowData.layout>
+				<log4j.appender.ShowData.layout.ConversionPattern>%d [%t] %-5p [%c] - %m%n</log4j.appender.ShowData.layout.ConversionPattern>
+				<!-- log4j配置结束 -->
+				
+				<!-- DataJson文件路径配置开始 -->
+                <dataJSON.url>/usr/DataJSON/</dataJSON.url>
+                <!-- DataJson文件路径配置结束 -->
+			</properties>
+		</profile>
+
+		<!-- 生产环境 -->
+		<profile>
+			<id>pro</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<!-- 数据库配置开始 -->
+				<jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+
+				<a.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/cdnms?useUnicode=true&characterEncoding=utf-8&pinGlobalTxToPhysicalConnection=true]]></a.jdbc.url>
+				<a.jdbc.username>root</a.jdbc.username>
+				<a.jdbc.password>cdnms</a.jdbc.password>
+
+				<b.jdbc.url><![CDATA[jdbc:mysql://127.0.0.1:3306/cdnms?useUnicode=true&characterEncoding=utf-8&pinGlobalTxToPhysicalConnection=true]]></b.jdbc.url>
+				<b.jdbc.username>root</b.jdbc.username>
+				<b.jdbc.password>cdnms</b.jdbc.password>
+				<!-- 数据库配置结束 -->
+
+				<!-- redis配置开始 -->
+				<redis.pool.maxActive>200</redis.pool.maxActive>
+				<redis.pool.maxIdle>50</redis.pool.maxIdle>
+				<redis.pool.maxWait>1000</redis.pool.maxWait>
+				<redis.pool.testOnBorrow>true</redis.pool.testOnBorrow>
+				<redis.uri><![CDATA[redis://password:cdnmsredis@127.0.0.1:6379/0]]></redis.uri>
+				<redis.timeout>10000</redis.timeout>
+				<!-- redis配置结束 -->
+
+				<!-- 密码重置配置开始 resetPwdConfig.properties -->
+				<BOSSEMAIL>chinamobilecdn@163.com</BOSSEMAIL>
+				<BOSSEMAILPWD>chinacdn163</BOSSEMAILPWD>
+				<MAILSERVERHOST>smtp.163.com</MAILSERVERHOST>
+				<MAILSERVERPORT>25</MAILSERVERPORT>
+				<TOKENTIME>24</TOKENTIME>
+				<!-- 公网服务IP地址和端口 -->
+				<SERVERIP>117.136.187.13</SERVERIP>
+				<SERVERPOST>10086</SERVERPOST>
+				<MAILTITLE>\u5BC6\u7801\u627E\u56DE</MAILTITLE>
+				<MAILCONTENT><![CDATA[<strong>\u60A8\u597D\uFF0C\u60A8\u7533\u8BF7\u4E86\u5BC6\u7801\u627E\u56DE\uFF0C\u8BF7\u53CA\u65F6\u70B9\u51FB\u94FE\u63A5\u8FDB\u884C\u4FEE\u6539.<strong><br><p><strong>\u6E29\u99A8\u63D0\u793A\uFF1A\u8BE5\u94FE\u63A5\u5931\u6548\u65F6\u95F4\u4E3A<strong>]]></MAILCONTENT>
+				<BOSSMAILNAME>\u7CFB\u7EDF\u7BA1\u7406\u5458</BOSSMAILNAME>
+				<SERVERMENUID>-1</SERVERMENUID>
+				<COMPANYNUM>51</COMPANYNUM>
+				<SERVERMENUDATEID>69</SERVERMENUDATEID>
+				<PERIOD>2</PERIOD>
+				<VERCODE>1</VERCODE>
+				<ACCPTTYPE><![CDATA[application/json;charset=UTF-8]]></ACCPTTYPE>
+				<URL><![CDATA[http://127.0.0.1:10086/PythonToRest/rest/pyrest/]]></URL>
+				<COPDEV>\u7701\u7F51\u8BBE\u5907\u3001\u57CE\u57DF\u7F51\u8BBE\u5907\u3001IDC\u8BBE\u5907\u3001\u9AA8\u5E72\u7F51\u8BBE\u5907</COPDEV>
+				<ALLDEV>IP\u8BBE\u5907\u3001IDC\u8BBE\u5907\u3001CDN\u8BBE\u5907</ALLDEV>
+				<COPPORT>\u7701\u7F51\u4E0A\u8054\u3001\u7701\u9645\u76F4\u8FDE\u3001\u4E09\u65B9\u51FA\u53E3\u3001IDC\u3001ICP\u76F4\u8FDE\u3001\u7EDF\u5EFA\u5185\u5BB9\u7F51\u7EDC\u3001\u7701\u5EFACache\u3001\u7701\u5EFACDN\u3001\u7B2C\u4E09\u65B9CDN\u3001\u56FA\u7F51\u7528\u6237\u3001\u624B\u673A\u7528\u6237</COPPORT>
+				<ALLPORT>\u4ED8\u8D39\u7A7F\u900F\u3001\u4ED8\u8D39\u76F4\u8FDE\u3001\u6536\u8D39\u5BA2\u6237\u3001\u514D\u8D39\u76F4\u8FDE\u3001\u7701\u9645\u76F4\u8FDE\u3001\u7EDF\u5EFA\u5185\u5BB9\u7F51\u7EDC\u3001IDC</ALLPORT>
+				<SIZE>200</SIZE>
+				<PORT>/#</PORT>
+				<!-- 密码重置配置结束 -->
+
+				<!-- jta配置 开始 -->
+				<com.atomikos.icatch.service>com.atomikos.icatch.standalone.UserTransactionServiceFactory</com.atomikos.icatch.service>
+				<com.atomikos.icatch.console_file_name>tm.out</com.atomikos.icatch.console_file_name>
+				<com.atomikos.icatch.log_base_name>tmlog</com.atomikos.icatch.log_base_name>
+				<com.atomikos.icatch.tm_unique_name>com.tlw.bpm.engine.atomikos.spring.jdbc.tm</com.atomikos.icatch.tm_unique_name>
+				<com.atomikos.icatch.console_file_limit>10000</com.atomikos.icatch.console_file_limit>
+				<com.atomikos.icatch.console_file_count>10</com.atomikos.icatch.console_file_count>
+				<com.atomikos.icatch.max_timeout>600000</com.atomikos.icatch.max_timeout>
+				<com.atomikos.icatch.default_jta_timeout>120000</com.atomikos.icatch.default_jta_timeout>
+				<com.atomikos.icatch.console_log_level>info</com.atomikos.icatch.console_log_level>
+				<com.atomikos.icatch.enable_logging>false</com.atomikos.icatch.enable_logging>
+				<!-- jta配置 结束 -->
+
+				<!-- log4j配置开始 -->
+				<log4j.rootLogger>INFO,console</log4j.rootLogger>
+
+				<log4j.appender.console>org.apache.log4j.ConsoleAppender</log4j.appender.console>
+				<log4j.appender.console.Target>System.out</log4j.appender.console.Target>
+				<log4j.appender.console.layout>org.apache.log4j.PatternLayout</log4j.appender.console.layout>
+				<log4j.appender.console.layout.ConversionPattern>%d [%t] %-5p [%c] - %m%n</log4j.appender.console.layout.ConversionPattern>
+
+				<log4j.logger.org.apache>info</log4j.logger.org.apache>
+				<log4j.logger.org.mybatis>info</log4j.logger.org.mybatis>
+				<log4j.logger.org.springframework>info</log4j.logger.org.springframework>
+				<log4j.logger.com.atomikos>info</log4j.logger.com.atomikos>
+				<log4j.logger.com.cmcc.ms>info</log4j.logger.com.cmcc.ms>
+
+				<log4j.logger.com.cmcc.ms>info,quartz</log4j.logger.com.cmcc.ms>
+				<log4j.appender.quartz>org.apache.log4j.DailyRollingFileAppender</log4j.appender.quartz>
+				<log4j.appender.quartz.File>${catalina.home}/logs/AtomikosLog.log</log4j.appender.quartz.File>
+				<log4j.appender.quartz.MaxFileSize>10MB</log4j.appender.quartz.MaxFileSize>
+				<log4j.appender.quartz.MaxBackupIndex>10</log4j.appender.quartz.MaxBackupIndex>
+				<log4j.appender.quartz.layout>org.apache.log4j.PatternLayout</log4j.appender.quartz.layout>
+				<log4j.appender.quartz.layout.ConversionPattern>%d [%t] %-5p [%c] - %m%n</log4j.appender.quartz.layout.ConversionPattern>
+				
+				<log4j.logger.com.cmcc.ms.controller.ShowDataController>info,ShowData</log4j.logger.com.cmcc.ms.controller.ShowDataController>
+				<log4j.appender.ShowData>org.apache.log4j.DailyRollingFileAppender</log4j.appender.ShowData>
+				<log4j.appender.ShowData.File>${catalina.home}/logs/ShowData.log</log4j.appender.ShowData.File>
+				<log4j.appender.ShowData.MaxFileSize>10MB</log4j.appender.ShowData.MaxFileSize>
+				<log4j.appender.ShowData.MaxBackupIndex>10</log4j.appender.ShowData.MaxBackupIndex>
+				<log4j.appender.ShowData.layout>org.apache.log4j.PatternLayout</log4j.appender.ShowData.layout>
+				<log4j.appender.ShowData.layout.ConversionPattern>%d [%t] %-5p [%c] - %m%n</log4j.appender.ShowData.layout.ConversionPattern>
+				<!-- log4j配置结束 -->
+				
+				<!-- DataJson文件路径配置开始 -->
+                <dataJSON.url>/usr/DataJSON/</dataJSON.url>
+                <!-- DataJson文件路径配置结束 -->
+			</properties>
+		</profile>
+	</profiles>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>4.0.3.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>4.0.3.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>4.0.3.RELEASE</version>
+		</dependency>
+		<!-- Spring begin -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<!-- Spring end -->
+
+		<!-- SpringMVC begin -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<!-- SpingMVC end -->
+
+		<!-- SpringAOP begin -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<!-- SpringAOP end -->
+
+		<!-- Mybatis begin -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+		<!-- Mybatis end -->
+
+		<!-- MybatisPaginator begin -->
+		<dependency>
+			<groupId>com.github.miemiedev</groupId>
+			<artifactId>mybatis-paginator</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<!-- MybatisPaginator end -->
+
+		<!-- Ehcache begin -->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<version>2.6.11</version>
+		</dependency>
+		<!-- Ehcache end -->
+
+		<!-- MybatisEhcache begin -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-ehcache</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<!-- MybatisEhcache end -->
+
+		<!-- DB begin -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.34</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.0.16</version>
+		</dependency>
+		<!-- DB end -->
+
+		<!-- Json begin -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<!-- Json end -->
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.9</version>
+			<type>jar</type>
+		</dependency>
+
+		<!-- Utils begin -->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.7</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.8.3</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+		<!-- Utils end -->
+
+		<!-- Web begin -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<!-- Web end -->
+
+		<!-- HttpClient begin -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.2</version>
+		</dependency>
+		<!-- HttpClient end -->
+
+		<!-- quartz begin -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+		<!-- quartz end -->
+
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.generator</groupId>
+			<artifactId>mybatis-generator-core</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.6.11</version>
+		</dependency>
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.staccatocommons</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>tomcat</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>4.0.6</version>
+		</dependency>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.atomikos</groupId>
+			<artifactId>transactions-jdbc</artifactId>
+			<version>3.9.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jsptags</groupId>
+			<artifactId>pager-taglib</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<!-- Logging begin -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<!-- Logging end -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.5.0-b01</version>
+		</dependency>
+		<dependency>
+			<groupId>ognl</groupId>
+			<artifactId>ognl</artifactId>
+			<version>3.0.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.struts.xwork</groupId>
+			<artifactId>xwork-core</artifactId>
+			<version>2.3.16.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-core</artifactId>
+			<version>2.3.16.2</version>
+		</dependency>
+
+		<!-- 以下依赖包为支持common包中某些类的引用 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.1.23</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>oro</groupId>
+			<artifactId>oro</artifactId>
+			<version>2.0.8</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<!-- excel依赖引入 -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+			<version>1.5.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<!-- 单元测试 -->
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.17</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- 文件上传下载 -->
+		<dependency>
+			<groupId>org.csource</groupId>
+			<artifactId>fastdfs-client-java</artifactId>
+			<version>1.25</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>org.json</artifactId>
+			<version>chargebee-1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.4.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.belerweb</groupId>
+		    <artifactId>pinyin4j</artifactId>
+		    <version>2.5.0</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>ROOT</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.17</version>
+					<configuration>
+						<configLocation>C:/jenkins/tool/checkstyle.xml</configLocation>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>com.puppycrawl.tools</groupId>
+							<artifactId>checkstyle</artifactId>
+							<version>6.19</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.10</version>
+				<configuration>
+					<testFailureIgnore>true</testFailureIgnore>
+					<argLine>${argLine}</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<!-- <version>0.7.7.201606060606</version> -->
+				<version>0.7.5.201505241946</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>3.0.3</version>
+				<configuration>
+					<xmlOutput>true</xmlOutput>
+					<xmlOutputDirectory>target/findbugs/</xmlOutputDirectory>
+					<excludeFilterFile>C:/jenkins/tool/findbugs-exclude.xml</excludeFilterFile>
+					<includeFilterFile>C:/jenkins/tool/findbugs-include.xml</includeFilterFile>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-maven-plugin</artifactId>
+				<version>1.3.2</version>
+				<dependencies>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>5.1.34</version>
+					</dependency>
+					<dependency>
+						<groupId>org.mybatis</groupId>
+						<artifactId>mybatis</artifactId>
+						<version>3.3.0</version>
+					</dependency>
+					<dependency>
+						<groupId>org.mybatis.generator</groupId>
+						<artifactId>mybatis-generator-core</artifactId>
+						<version>1.3.2</version>
+					</dependency>
+
+				</dependencies>
+				<configuration>
+					<verbose>true</verbose>
+					<overwrite>true</overwrite>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version> 
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>3.0.3</version>
+				<configuration>
+					<xmlOutput>true</xmlOutput>
+					<xmlOutputDirectory>target/findbugs/</xmlOutputDirectory>
+					<excludeFilterFile>C:/jenkins/tool/findbugs-exclude.xml</excludeFilterFile>
+					<includeFilterFile>C:/jenkins/tool/findbugs-include.xml</includeFilterFile>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>

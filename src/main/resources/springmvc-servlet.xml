@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+				http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
+				http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+				http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+	<!-- 默认的注解映射的支持 ,它会自动注册DefaultAnnotationHandlerMapping 与AnnotationMethodHandlerAdapter   -->
+    <mvc:annotation-driven />
+
+	<!-- enable autowire 向容器自动注册 -->	<!-- 存在component-scan 可不配置 annotation-config -->
+	<context:annotation-config />
+
+    <!-- 设置使用注解的类所在的jar包 -->
+    <context:component-scan base-package="com.cmcc.ms"/>
+
+    <context:component-scan base-package="com.cmcc.ms.controller">
+    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <context:component-scan base-package="com.cmcc.ms.interceptor">
+    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+    </context:component-scan>
+    <context:component-scan base-package="com.cmcc.ms.redis">
+    	<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+    </context:component-scan>
+    
+    <bean id="SpringContextUtil" class="com.cmcc.ms.common.utils.SpringContextUtil"/>
+
+    <!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    	<property name="prefix" value="" />   
+        <property name="suffix" value="" /> 
+    </bean>
+
+	<!-- 对静态资源文件的访问 -->
+	<mvc:resources mapping="/static/**" location="/static/"
+		cache-period="31556926" />
+		
+	<!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"/>
+        <!-- 指定所上传文件的总大小不能超过20MB。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->
+       <!--  <property name="resolveLazily" value="true"/> -->
+        <property name="maxUploadSize" value="20000000"/>
+        <property name="maxInMemorySize">
+			<value>20000000</value>
+		</property>
+    </bean>
+
+    <!-- 
+    <bean id="exceptionResolver" class="com.cmcc.ms.interceptor.CmccSimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="MaxUploadSizeExceededException">common/web404</prop>
+                <prop key="NoHandlerFoundException">common/web404</prop>
+                <prop key="SessionTimeoutException">account/timeOver</prop>
+                <prop key="ApiTimeoutException">common/apiTimeOut</prop>
+                <prop key="AuthException">common/web404</prop>
+                <prop key="SessionAuthException">account/loginWarn</prop>
+                <prop key="JedisConnectionException">account/errorRedis</prop>
+                <prop key="ConnectException">account/errorRedis</prop>
+            </props>
+        </property>
+        <property name="defaultErrorView" value="account/error404" />
+        <property name="defaultStatusCode" value="500" />
+		<property name="exceptionAttribute" value="exception"/>
+        <property name="warnLogCategory" value="warn"/>
+    </bean>
+    -->
+	<!-- 拦截器 --> 
+   <mvc:interceptors>
+      <mvc:interceptor>
+        <mvc:mapping path="/user/**"/>
+        <mvc:mapping path="/userManage/**"/>
+        <mvc:mapping path="/cdnManage/**"/>
+        <mvc:mapping path="/export/**"/>
+        <mvc:mapping path="/operateLog/**"/>
+        <!--  login不拦截  -->
+        <mvc:exclude-mapping path="/role/**"/>
+        <mvc:exclude-mapping path="/data/**"/>
+        <mvc:exclude-mapping path="/getpassword/**"/>
+        <mvc:exclude-mapping path="/login"/>
+        <bean class="com.cmcc.ms.interceptor.CommonInterceptor"></bean>
+       </mvc:interceptor>
+     </mvc:interceptors> 
+     
+</beans>

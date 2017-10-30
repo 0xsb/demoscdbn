@@ -1,0 +1,12 @@
+{
+    "cjdk": {
+        "caiji": {
+            "name": "采集CP",
+            "value": "0100"
+        },
+        "daikuan": {
+            "name": "带宽",
+            "value": 35.9
+        }
+    }
+}

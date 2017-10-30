@@ -1,0 +1,75 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "2"
+  creationTimestamp: 2017-09-28T02:04:56Z
+  generation: 3
+  labels:
+    kubernetes-admin.caicloud.io/application: cdnms-jacoco
+    kubernetes-admin.caicloud.io/type: application
+  name: cdnms-jacoco
+  namespace: demo
+  resourceVersion: "45237023"
+  selfLink: /apis/extensions/v1beta1/namespaces/demo/deployments/cdnms-jacoco
+  uid: 6cdb9382-a3f1-11e7-943f-288023b66538
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      kubernetes-admin.caicloud.io/application: cdnms-jacoco
+      kubernetes-admin.caicloud.io/type: application
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        kubernetes-admin.caicloud.io/application: cdnms-jacoco
+        kubernetes-admin.caicloud.io/select-by: service_demo_cdnmstomcat
+        kubernetes-admin.caicloud.io/type: application
+    spec:
+      containers:
+      - image: cargo.caicloudprivatetest.com/cdnms/cdnms-jacoco:v4
+        imagePullPolicy: IfNotPresent
+        lifecycle: {}
+        name: cdnms1
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 8494
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 500m
+            memory: 512Mi
+        securityContext: {}
+        terminationMessagePath: /dev/termination-log
+      volumeMounts:
+        - mountPath: /apache-tomcat-7.0.78/webapps
+          name: cndms-webapps
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name:cndms-webapps
+        nfs:
+          path: /root/liangxuezhi/webapps
+          server:172.23.30.66
+	dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  observedGeneration: 3
+  replicas: 1
+  updatedReplicas: 1

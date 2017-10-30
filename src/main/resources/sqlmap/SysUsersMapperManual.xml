@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmcc.ms.mapper.SysUsersMapperManual" >
+  <resultMap id="BaseResultMap" type="com.cmcc.ms.entity.system.SysUsersManual">
+    <id column="USER_ID" jdbcType="INTEGER" property="userId" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="USER_PASSWORD" jdbcType="VARCHAR" property="userPassword" />
+    <result column="USER_RELNAME" jdbcType="VARCHAR" property="userRelname" />
+    <result column="ROLE_ID" jdbcType="INTEGER" property="roleId" />
+    <result column="ROLE_NAME" jdbcType="VARCHAR" property="roleName" />
+    <result column="USER_DESC" jdbcType="VARCHAR" property="userDesc" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="STATE" jdbcType="VARCHAR" property="state" />
+    <result column="WRONGCOUNT" jdbcType="INTEGER" property="wrongcount" />
+    <result column="LASTWROTIME" jdbcType="DATE" property="lastwrotime" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="CONTACTS" jdbcType="VARCHAR" property="contacts" />
+    <result column="COMPANY" jdbcType="VARCHAR" property="company" />
+    <result column="TOKEN" jdbcType="VARCHAR" property="token" />
+    <association property="sysRolesManual" javaType="SysRolesManual" column="ROLE_ID" select="com.cmcc.ms.mapper.SysRolesMapperManual.getRole" fetchType="lazy"/>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    USER_ID, USER_NAME, USER_PASSWORD, USER_RELNAME, ROLE_ID,USER_DESC, CREATE_DATE, 
+    STATE, WRONGCOUNT, LASTWROTIME, PHONE, EMAIL, CONTACTS, COMPANY, TOKEN
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cmcc.ms.entity.system.SysUsersExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    sys_users.USER_ID, 
+    sys_users.USER_NAME, 
+    sys_users.USER_PASSWORD, 
+    sys_users.USER_RELNAME, 
+    sys_users.ROLE_ID,
+    sys_roles.ROLE_NAME,
+    sys_users.USER_DESC, 
+    sys_users.CREATE_DATE, 
+    sys_users.STATE, 
+    sys_users.WRONGCOUNT, 
+    sys_users.LASTWROTIME, 
+    sys_users.PHONE, 
+    sys_users.EMAIL, 
+    sys_users.CONTACTS, 
+    sys_users.COMPANY, 
+    sys_users.TOKEN
+    from sys_users LEFT JOIN sys_roles ON sys_users.`ROLE_ID` = sys_roles.`ROLE_ID` 
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="pageIndex>=0 and pageSize>0">
+    	limit ${pageIndex},${pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    sys_users.USER_ID, 
+    sys_users.USER_NAME, 
+    sys_users.USER_PASSWORD, 
+    sys_users.USER_RELNAME, 
+    sys_users.ROLE_ID,
+    sys_roles.ROLE_NAME,
+    sys_users.USER_DESC, 
+    sys_users.CREATE_DATE, 
+    sys_users.STATE, 
+    sys_users.WRONGCOUNT, 
+    sys_users.LASTWROTIME, 
+    sys_users.PHONE, 
+    sys_users.EMAIL, 
+    sys_users.CONTACTS, 
+    sys_users.COMPANY, 
+    sys_users.TOKEN
+    from sys_users LEFT JOIN sys_roles ON sys_users.`ROLE_ID` = sys_roles.`ROLE_ID` 
+    where USER_ID = #{userId,jdbcType=INTEGER}
+  </select>
+    <select id="selectByUserName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_users
+    where USER_NAME = #{userName,jdbcType=VARCHAR}
+  </select>
+  <update id="deleteByUserIds" parameterType="java.lang.String" >
+	update sys_users set state=0 where USER_ID IN 
+ 		<foreach item="userIds" index="index" collection="array" open="(" separator="," close=")">
+			#{userIds,jdbcType=INTEGER}
+		</foreach> 
+  </update>
+  <update id="updateStateByUserIds" parameterType="java.lang.String" >
+	update sys_users set state=1 where USER_ID IN 
+ 		<foreach item="userIds" index="index" collection="array" open="(" separator="," close=")">
+			#{userIds,jdbcType=INTEGER}
+		</foreach> 
+  </update>
+  <update id="usersGetRightByUserIds" parameterType="map">
+	update sys_users set ROLE_ID=#{subGroup,jdbcType=INTEGER} where USER_ID IN 
+ 		<foreach item="userIds" index="index" collection="userIds" open="(" separator="," close=")">
+			#{userIds,jdbcType=INTEGER}
+		</foreach> 
+  </update>
+   <select id="hasUserByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer" >
+    select count(*) from sys_users where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </select>
+  <update id="updateLastWroTimeByUser" parameterType="com.cmcc.ms.entity.system.SysUsersManual">
+    update sys_users
+    set  WRONGCOUNT = #{wrongcount,jdbcType=INTEGER},
+      LASTWROTIME = #{lastwrotime,jdbcType=DATE}
+    where USER_ID = #{userId,jdbcType=INTEGER}
+  </update>
+  <select id="selectCmcciwByUserName" parameterType="java.lang.String" resultType="java.lang.String" >
+    select pwd from iw_user where username = #{userName}
+  </select>
+</mapper>

@@ -1,0 +1,34 @@
+{
+    "ssandfz": {
+        "alibaba": {
+            "shishi": 120,
+            "tfengzhi": 240,
+            "yfengzhi": 240,
+            "danwei":"Tbps"
+        },
+        "jingdong": {
+            "shishi": 120,
+            "tfengzhi": 240,
+            "yfengzhi": 240,
+            "danwei":"Tbps"
+        },
+        "tengxun": {
+            "shishi": 120,
+            "tfengzhi": 240,
+            "yfengzhi": 240,
+            "danwei":"Tbps"
+        },
+        "baidu": {
+            "shishi": 120,
+            "tfengzhi": 240,
+            "yfengzhi": 240,
+            "danwei":"Tbps"
+        },
+        "aiqiyi": {
+            "shishi": 120,
+            "tfengzhi": 240,
+            "yfengzhi": 240,
+            "danwei":"Tbps"
+        }
+    }
+}

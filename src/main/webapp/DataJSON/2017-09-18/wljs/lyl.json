@@ -1,0 +1,132 @@
+{
+    "lyl": [
+        {
+            "name": "全国",
+            "liyonglv": 41
+        },
+        {
+            "name": "安徽",
+            "liyonglv": 25
+        },
+        {
+            "name": "北京",
+            "liyonglv": 31
+        },
+        {
+            "name": "福建",
+            "liyonglv": 38
+        },
+        {
+            "name": "甘肃",
+            "liyonglv": 76
+        },
+        {
+            "name": "广东",
+            "liyonglv": 43
+        },
+        {
+            "name": "广西",
+            "liyonglv": 45
+        },
+        {
+            "name": "贵州",
+            "liyonglv": 85
+        },
+        {
+            "name": "海南",
+            "liyonglv": 44
+        },
+        {
+            "name": "河北",
+            "liyonglv": 80
+        },
+        {
+            "name": "河南",
+            "liyonglv": 25
+        },
+        {
+            "name": "黑龙江",
+            "liyonglv": 52
+        },
+        {
+            "name": "湖北",
+            "liyonglv": 55
+        },
+        {
+            "name": "湖南",
+            "liyonglv": 36
+        },
+        {
+            "name": "吉林",
+            "liyonglv": 29
+        },
+        {
+            "name": "江苏",
+            "liyonglv": 23
+        },
+        {
+            "name": "江西",
+            "liyonglv": 39
+        },
+        {
+            "name": "辽宁",
+            "liyonglv": 66
+        },
+        {
+            "name": "内蒙古",
+            "liyonglv": 19
+        },
+        {
+            "name": "宁夏",
+            "liyonglv": 56
+        },
+        {
+            "name": "青海",
+            "liyonglv": 35
+        },
+        {
+            "name": "山东",
+            "liyonglv": 21
+        },
+        {
+            "name": "山西",
+            "liyonglv": 49
+        },
+        {
+            "name": "陕西",
+            "liyonglv": 45
+        },
+        {
+            "name": "上海",
+            "liyonglv": 91
+        },
+        {
+            "name": "四川",
+            "liyonglv": 46
+        },
+        {
+            "name": "天津",
+            "liyonglv": 43
+        },
+        {
+            "name": "西藏",
+            "liyonglv": 16
+        },
+        {
+            "name": "新疆",
+            "liyonglv": 17
+        },
+        {
+            "name": "云南",
+            "liyonglv": 20
+        },
+        {
+            "name": "浙江",
+            "liyonglv": 73
+        },
+        {
+            "name": "重庆",
+            "liyonglv": 57
+        }
+    ]
+}

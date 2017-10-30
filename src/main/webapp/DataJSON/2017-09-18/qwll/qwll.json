@@ -1,0 +1,58 @@
+{
+    "qwll": {
+        "ll": [
+            {
+                "name": "省建OTT",
+                "value": 9.91
+            },
+            {
+                "name": "Cache",
+                "value": 23
+            },
+            {
+                "name": "IDC",
+                "value": 16.3
+            },
+            {
+                "name": "统建CDN",
+                "value": 3.45
+            }
+        ],
+        "port": [
+            {
+                "name": "省建OTT",
+                "value": 12546
+            },
+            {
+                "name": "IDC",
+                "value": 6540
+            },
+            {
+                "name": "统建CDN",
+                "value": 15055
+            },
+            {
+                "name": "Cache",
+                "value": 11250
+            }
+        ],
+        "dk": [
+            {
+                "name": "省建OTT",
+                "value": 56
+            },
+            {
+                "name": "Cache",
+                "value": 48
+            },
+            {
+                "name": "IDC",
+                "value": 65
+            },
+            {
+                "name": "统建CDN",
+                "value": 126
+            }
+        ]
+    }
+}

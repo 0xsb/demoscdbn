@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmcc.ms.mapper.SysMenusMapperManual" >
+ <resultMap id="BaseResultMap" type="com.cmcc.ms.entity.system.SysMenus">
+    <id column="MENU_ID" jdbcType="INTEGER" property="menuId" />
+    <result column="MENU_NAME" jdbcType="VARCHAR" property="menuName" />
+    <result column="PARENT_ID" jdbcType="INTEGER" property="parentId" />
+    <result column="DEPTH" jdbcType="INTEGER" property="depth" />
+    <result column="URL" jdbcType="VARCHAR" property="url" />
+    <result column="TYPE" jdbcType="INTEGER" property="type" />
+    <result column="IMG" jdbcType="VARCHAR" property="img" />
+    <result column="SORT" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <select id="getMenusByRoleId" resultMap="BaseResultMap" parameterType="int"> 
+    SELECT sm.* FROM sys_menus sm,sys_roles sr,role_menu_relation rmr 
+    WHERE sr.role_id=rmr.role_id and sm.menu_id=rmr.menu_id and sr.role_id=#{roleId} ORDER BY sm.`TYPE`,sm.`MENU_ID` ASC
+  </select> 
+  <select id="getMenusByType" resultMap="BaseResultMap" parameterType="int"> 
+    SELECT sm.* FROM sys_menus sm 
+    WHERE sm.type=#{type}
+  </select> 
+</mapper>

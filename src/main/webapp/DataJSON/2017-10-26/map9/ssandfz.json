@@ -1,0 +1,34 @@
+{
+    "ssandfz": {
+        "suningyigou": {
+            "shishi": 44,
+            "danwei": "Gbps",
+            "tfengzhi": 54,
+            "yfengzhi": ""
+        },
+        "jingdong": {
+            "shishi": 15,
+            "danwei": "Gbps",
+            "tfengzhi": 19,
+            "yfengzhi": ""
+        },
+        "dangdangwang": {
+            "shishi": 105,
+            "danwei": "Gbps",
+            "tfengzhi": 145,
+            "yfengzhi": ""
+        },
+        "yamaxun": {
+            "shishi": 710,
+            "danwei": "Gbps",
+            "tfengzhi": 915,
+            "yfengzhi": ""
+        },
+        "alibaba": {
+            "shishi": 272,
+            "danwei": "Gbps",
+            "tfengzhi": 338,
+            "yfengzhi": ""
+        }
+    }
+}
